@@ -80,6 +80,22 @@ class ReservationResource extends Resource
                                     ->default(1)
                                     ->minValue(1)
                                     ->required()
+                                    // --- 👇 LA VALIDACIÓN DEL STOCK 👇 ---
+                                    ->rules([
+                                        fn (\Filament\Forms\Get $get): \Closure => function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            // Buscamos el producto que seleccionó en la lista
+                                            $productId = $get('product_id');
+                                            if ($productId) {
+                                                $product = \App\Models\Product::find($productId);
+                                                
+                                                // Si la cantidad que pide es MAYOR al stock que hay, tira error
+                                                if ($product && $value > $product->stock) {
+                                                    $fail("¡Stock insuficiente! Solo quedan {$product->stock} disponibles.");
+                                                }
+                                            }
+                                        },
+                                    ])
+                                    // -------------------------------------
                                     ->columnSpan(1),
                             ])
                             ->columns(4) // Divide el espacio para que quede el plato largo y la cantidad cortita

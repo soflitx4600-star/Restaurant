@@ -38,7 +38,7 @@ class ProductResource extends Resource
                 TextInput::make('name')
                     ->required(),
 
-                // 3. LA FOTO (Esto es lo que querés)
+                // 3. LA FOTO
                 FileUpload::make('image')
                     ->directory('products')
                     ->image()
@@ -49,6 +49,14 @@ class ProductResource extends Resource
                     ->numeric()
                     ->prefix('$')
                     ->required(),
+
+                // --- NUEVO CAMPO DE STOCK ---
+                TextInput::make('stock')
+                    ->label('Stock Disponible')
+                    ->numeric()
+                    ->default(0)
+                    ->required(),
+                // ----------------------------
                 
                 // 5. Descripción
                 Textarea::make('description')
@@ -60,10 +68,30 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->circular(), // Muestra la foto
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('price')->money('ars'),
-                TextColumn::make('subject.name')->label('Categoría'),
+                ImageColumn::make('image')->circular(), 
+                
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                
+                TextColumn::make('price')
+                    ->money('ars'),
+
+                // --- NUEVA COLUMNA DE STOCK CON COLORES ---
+                TextColumn::make('stock')
+                    ->label('Stock')
+                    ->numeric()
+                    ->sortable()
+                    ->badge() // Lo hace ver como una etiqueta
+                    ->color(fn (string $state): string => match (true) {
+                        $state <= 5 => 'danger',   // Rojo si quedan 5 o menos
+                        $state <= 15 => 'warning', // Amarillo si quedan 15 o menos
+                        default => 'success',      // Verde si hay más
+                    }),
+                // ------------------------------------------
+
+                TextColumn::make('subject.name')
+                    ->label('Categoría'),
             ])
             ->filters([])
             ->actions([

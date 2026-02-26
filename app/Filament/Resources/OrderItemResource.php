@@ -19,7 +19,7 @@ class OrderItemResource extends Resource
 {
     protected static ?string $model = OrderItem::class;
 
-    // --- 👇 ESTA ES LA LÍNEA MÁGICA QUE LO OCULTA DEL MENÚ 👇 ---
+    
     protected static bool $shouldRegisterNavigation = false; 
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
