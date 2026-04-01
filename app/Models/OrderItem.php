@@ -11,11 +11,20 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
+        'order_id', // <--- ¡Agregado clave para conectarlo con la Comanda!
         'reservation_id',
         'product_id',
         'quantity',
         'note',
     ];
+
+    /**
+     * Relación: Un ítem pertenece a una Comanda (Ticket)
+     */
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
 
     public function reservation(): BelongsTo
     {

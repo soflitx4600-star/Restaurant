@@ -42,4 +42,9 @@ class StatsOverview extends BaseWidget
                 ->color($gananciaNeta >= 0 ? 'success' : 'danger'),
         ];
     }
+    public static function canView(): bool
+    {
+        // Solo el Admin (1) puede ver cuánta plata hay
+        return auth()->user()->role_id === 1;
+    }
 }

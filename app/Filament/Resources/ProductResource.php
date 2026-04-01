@@ -115,4 +115,11 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        // Solo el Admin (1) puede ver esta pestaña
+        return auth()->user()->role_id === 1;
+    }
+    
 }

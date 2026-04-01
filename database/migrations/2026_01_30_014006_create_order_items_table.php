@@ -16,10 +16,9 @@ return new class extends Migration
 
             // 1. ¿A qué reserva pertenece? (La Mesa)
             // Esto es clave: vincula este pedido con la reserva específica.
-            $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('reservation_id')->nullable()->constrained()->onDelete('cascade');
 
-            // 2. ¿Qué producto es? (La Comida)
-            // Vincula con la tabla de productos (Milanesas, Bebidas, etc.)
+            
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
 
             // 3. Cantidad
